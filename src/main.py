@@ -21,28 +21,43 @@ class GitHubBackupTool:
         # Ensure config directory exists
         os.makedirs(os.path.dirname(config_path), exist_ok=True)
         
-        # Create default config if not exists
+        # Check if config exists, if not, start interactive setup
         if not os.path.exists(config_path):
-            self._create_default_config()
+            self.interactive_setup()
 
-    def _create_default_config(self):
+    def interactive_setup(self):
         """
-        Create a default repositories configuration file
+        Interactive setup to configure repositories
         """
-        default_config = {
-            "repositories": [
-                {
-                    "name": "example-repo",
-                    "url": "https://github.com/username/example-repo",
-                    "local_path": "repos/example-repo"
-                }
-            ]
-        }
+        print("Welcome to GitHub Repository Backup and Sync Tool!")
+        print("Let's set up your repositories.")
         
+        repositories = []
+        while True:
+            print("\nAdd a new repository:")
+            name = input("Repository Name (e.g., my-project): ").strip()
+            url = input("Repository URL (e.g., https://github.com/username/repo): ").strip()
+            local_path = input("Local Backup Path (default: repos/{name}): ").strip()
+            
+            if not local_path:
+                local_path = os.path.join('repos', name)
+            
+            repositories.append({
+                "name": name,
+                "url": url,
+                "local_path": local_path
+            })
+            
+            add_more = input("\nDo you want to add another repository? (y/n): ").lower()
+            if add_more != 'y':
+                break
+        
+        # Save configuration
+        config = {"repositories": repositories}
         with open(self.config_path, 'w') as f:
-            json.dump(default_config, f, indent=4)
+            json.dump(config, f, indent=4)
         
-        print(f"Created default config at {self.config_path}. Please update with your repositories.")
+        print(f"\nConfiguration saved to {self.config_path}")
 
     def load_repositories(self):
         """
@@ -66,6 +81,10 @@ class GitHubBackupTool:
         Backup and synchronize all configured repositories
         """
         repositories = self.load_repositories()
+        
+        if not repositories:
+            print("No repositories configured. Please add repositories first.")
+            return
         
         for repo_config in repositories:
             name = repo_config['name']
