@@ -1,0 +1,9 @@
+{
+    "repositories": [
+        {
+            "name": "example-project",
+            "url": "https://github.com/username/example-project",
+            "local_path": "repos/example-project"
+        }
+    ]
+}
