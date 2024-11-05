@@ -1,30 +1,42 @@
-# GitHub Repository Backup and Sync Tool
+# RepoGuardian: GitHub Repository Backup and Sync Tool
+
+## Overview
+RepoGuardian is a comprehensive Python-based tool for managing, backing up, and synchronizing GitHub repositories. It provides an easy-to-use solution for developers and teams to maintain local backups and keep repositories in sync.
 
 ## Features
-- Local backup of GitHub repositories
-- Offline synchronization
-- Personal project archival
+- 🔒 Local backup of GitHub repositories
+- 🔄 Offline synchronization
+- 📦 Personal project archival
+- 🖥️ Interactive repository configuration
 
-## Setup
+## Prerequisites
+- Python 3.7+
+- Git
+- pip
+
+## Installation
 1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Configure your GitHub repositories in `config/repositories.json`
+```bash
+git clone https://github.com/yourusername/repguardian.git
+cd repguardian
+```
+
+2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
-Run the main script to backup and sync repositories:
-```
+Run the tool and follow the interactive setup:
+```bash
 python src/main.py
 ```
 
-## Configuration
-Create a `config/repositories.json` file with your repositories:
-```json
-{
-    "repositories": [
-        {
-            "name": "repo-name",
-            "url": "https://github.com/username/repo",
-            "local_path": "/path/to/local/backup"
-        }
-    ]
-}
+## Technologies
+- Python
+- Git CLI
+- SQLite
+- GitPython
+
+## License
+MIT License
