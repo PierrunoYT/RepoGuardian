@@ -3,16 +3,17 @@ import json
 import argparse
 from datetime import datetime
 
-from database import RepositoryDatabase
-from git_sync import GitRepositorySync
+from src.database import RepositoryDatabase
+from src.git_sync import GitRepositorySync
 
 class GitHubBackupTool:
-    def __init__(self, config_path='config/repositories.json'):
+    def __init__(self, config_path='config/repositories.json', interactive_setup=False):
         """
         Initialize the GitHub Backup Tool
         
         Args:
             config_path (str): Path to the repositories configuration file
+            interactive_setup (bool): Whether to start interactive setup if config doesn't exist
         """
         self.config_path = config_path
         self.db = RepositoryDatabase()
@@ -21,8 +22,8 @@ class GitHubBackupTool:
         # Ensure config directory exists
         os.makedirs(os.path.dirname(config_path), exist_ok=True)
         
-        # Check if config exists, if not, start interactive setup
-        if not os.path.exists(config_path):
+        # Check if config exists, if not, start interactive setup if enabled
+        if not os.path.exists(config_path) and interactive_setup:
             self.interactive_setup()
 
     def interactive_setup(self):

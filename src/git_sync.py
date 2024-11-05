@@ -4,7 +4,7 @@ from typing import List, Dict
 from datetime import datetime
 
 class GitRepositorySync:
-    def __init__(self, base_backup_dir: str = 'backups'):
+    def __init__(self, base_backup_dir: str = 'temp_backups'):
         """
         Initialize GitRepositorySync
         
@@ -26,6 +26,11 @@ class GitRepositorySync:
             bool: True if successful, False otherwise
         """
         try:
+            # Remove existing directory if it exists to prevent partial clones
+            if os.path.exists(local_path):
+                import shutil
+                shutil.rmtree(local_path)
+
             # Ensure the local path exists
             os.makedirs(local_path, exist_ok=True)
             
@@ -34,6 +39,10 @@ class GitRepositorySync:
             return True
         except Exception as e:
             print(f"Error cloning repository {repo_url}: {e}")
+            # Remove the local path if clone fails
+            if os.path.exists(local_path):
+                import shutil
+                shutil.rmtree(local_path)
             return False
 
     def sync_repository(self, local_path: str) -> Dict[str, str]:
